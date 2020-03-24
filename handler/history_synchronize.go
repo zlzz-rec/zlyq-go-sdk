@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/zlzz-rec/zlyq-go-sdk/util"
 	"github.com/zlzz-rec/zlyq-go-sdk/model"
+	"github.com/zlzz-rec/zlyq-go-sdk/util"
 )
 
 // HistorySynchronize 上传用户历史埋点数据

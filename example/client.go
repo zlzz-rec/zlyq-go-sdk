@@ -88,7 +88,7 @@ func main() {
 		AppId:     450007472627785728,
 		AppKey:    "bb4ddb451bdd80af204d9f464fbf07df",
 		AppSecret: "2d4964bbafde4bf415f9e5b81c4556b3",
-		Address:     "http://testtrackapi.zplatform.cn",
+		Address:   "http://testtrackapi.zplatform.cn",
 	}
 	sync_history_example(trackClient)
 
