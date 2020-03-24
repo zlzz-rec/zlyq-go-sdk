@@ -7,8 +7,8 @@ import (
 	"github.com/zlzz-rec/zlyq-go-sdk/model"
 )
 
-// sync_user_test
-func sync_user_test(client *handler.Client) {
+// sync_user_example
+func sync_user_example(client *handler.Client) {
 
 	// 用户基本信息导入
 	req := &model.ReqUserInfoSynchronize{
@@ -20,6 +20,10 @@ func sync_user_test(client *handler.Client) {
 	if err := client.UserInfoSynchronize(req); err != nil {
 		fmt.Println(err)
 	}
+}
+
+// sync_user_follow_example
+func sync_user_follow_example(client *handler.Client) {
 
 	// 用户关注数据导入
 	var userId uint64 = 457741243892858880
@@ -31,8 +35,8 @@ func sync_user_test(client *handler.Client) {
 	}
 }
 
-// sync_history_test
-func sync_history_test(client *handler.Client) {
+// sync_history_example
+func sync_history_example(client *handler.Client) {
 
 	// 用户基本信息导入
 	trackCommon := model.TrackCommon{
@@ -70,15 +74,22 @@ func sync_history_test(client *handler.Client) {
 
 func main() {
 
-	client := &handler.Client{
+	// 同步用户数据example
+	//appClient := &handler.Client{
+	//	AppId:     450007472627785728,
+	//	AppKey:    "bb4ddb451bdd80af204d9f464fbf07df",
+	//	AppSecret: "2d4964bbafde4bf415f9e5b81c4556b3",
+	//	Address:     "http://testappapi.zplatform.cn",
+	//}
+	//sync_user_example(appClient)
+
+	// 同步历史交互数据example
+	trackClient := &handler.Client{
 		AppId:     450007472627785728,
 		AppKey:    "bb4ddb451bdd80af204d9f464fbf07df",
 		AppSecret: "2d4964bbafde4bf415f9e5b81c4556b3",
-		Debug:     true,
+		Address:     "http://testtrackapi.zplatform.cn",
 	}
-
-	// sync_user_test(client)
-
-	sync_history_test(client)
+	sync_history_example(trackClient)
 
 }

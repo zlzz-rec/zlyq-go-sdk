@@ -18,44 +18,23 @@ type Client struct {
 	AppKey    string
 	AppSecret string
 	AppId     uint64
-	Debug     bool
+	Address   string
 }
 
-const (
-	AppApi string = "appApi"
-	TrackApi string = "trackApi"
-)
-
 // HttpMethod POST-GET-PUT-DELETE
-func (c *Client) HttpMethod(method, apiType string, apiUrl string, params map[string]string, body []byte) (string, error) {
+func (c *Client) HttpMethod(method, address string, apiUrl string, params map[string]string, body []byte) (string, error) {
 
 	var req *http.Request
 	var err error
 
 	// 组装url
-	var address string
-
-	if apiType == AppApi {
-		if c.Debug {
-			address = util.TestAppAddress
-		} else {
-			address = util.FormalAppAddress
-		}
-	} else if apiType == TrackApi {
-		if c.Debug {
-			address = util.TestTrackAddress
-		} else {
-			address = util.FormalTrackAddress
-		}
-	}
-
 	url, err := util.Join(address, apiUrl)
 	if err != nil {
 		return "", fmt.Errorf("util.Join failed:%s, address=%s, apiUrl=%s", err.Error(), address, apiUrl)
 	}
 	urlStr := url.String()
 
-	header, urlParams := HttpHeader(c, params)
+	header, urlParams := BuildHttpHeader(c, params)
 	if urlParams != "" {
 		urlStr = urlStr + "?" + urlParams
 	}
@@ -75,7 +54,6 @@ func (c *Client) HttpMethod(method, apiType string, apiUrl string, params map[st
 	}
 
 	client := &http.Client{}
-
 	resp, err := client.Do(req)
 	if err != nil {
 		return "", fmt.Errorf("client.Do failed:%s", err.Error())
@@ -105,8 +83,8 @@ func ParseResponse(resp string) error {
 	return nil
 }
 
-// HttpHeader HttpHeader
-func HttpHeader(client *Client, params map[string]string) (http.Header, string) {
+// BuildHttpHeader HttpHeader
+func BuildHttpHeader(client *Client, params map[string]string) (http.Header, string) {
 	header := http.Header{}
 	header.Add("Content-Type", "application/json")
 	sign, urlParam := auth.AddSign(params, client.AppId, client.AppSecret)

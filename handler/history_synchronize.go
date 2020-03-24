@@ -15,7 +15,7 @@ func (client *Client) HistorySynchronize(trackInfo model.TrackInfo) error {
 		return err
 	}
 
-	resp, err := client.HttpMethod("POST", TrackApi, util.HistorySynchronizeApi, nil, body)
+	resp, err := client.HttpMethod("POST", client.Address, util.HistorySynchronizeApi, nil, body)
 	fmt.Println(resp)
 	if err != nil {
 		return err

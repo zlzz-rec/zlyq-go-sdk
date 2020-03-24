@@ -15,7 +15,7 @@ func (client *Client) UserInfoSynchronize(req *model.ReqUserInfoSynchronize) err
 	if err != nil {
 		return err
 	}
-	resp, err := client.HttpMethod("POST", AppApi, util.UserInfoSynchronizeApi, nil, body)
+	resp, err := client.HttpMethod("POST", client.Address, util.UserInfoSynchronizeApi, nil, body)
 	fmt.Println(resp)
 	if err != nil {
 		return err
@@ -38,7 +38,7 @@ func (client *Client) UserFollowSynchronize(userId uint64, followMap map[uint64]
 	if err != nil {
 		return err
 	}
-	resp, err := client.HttpMethod("POST", AppApi, util.UserFollowSynchronizeApi, nil, body)
+	resp, err := client.HttpMethod("POST", client.Address, util.UserFollowSynchronizeApi, nil, body)
 	fmt.Println(resp)
 	if err != nil {
 		return err
