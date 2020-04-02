@@ -25,3 +25,9 @@ type ReqUserInfoSynchronize struct {
 	DeviceId   string `json:"udid"` // 必传
 	DeviceType string `json:"deviceType"`
 }
+
+// ReqUserFollow  UserFollowSynchronize 接口 请求 body 体定义
+type ReqUserFollow struct {
+	UserId    string           `json:"userId"`
+	FollowMap map[string]int64 `json:"followMap"`
+}
