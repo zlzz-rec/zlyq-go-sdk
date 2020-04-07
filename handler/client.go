@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 	"strings"
 
@@ -52,6 +54,77 @@ func (c *Client) HttpMethod(method, address string, apiUrl string, params map[st
 	if err != nil {
 		return "", fmt.Errorf("http.NewRequest failed:%s", err.Error())
 	}
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", fmt.Errorf("client.Do failed:%s", err.Error())
+	}
+	defer resp.Body.Close()
+
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", fmt.Errorf("ioutil.ReadAll failed:%s", err.Error())
+	}
+
+	if err := ParseResponse(string(respBody)); err != nil {
+		return string(respBody), fmt.Errorf("ParseResponse failed:%s", err.Error())
+	}
+	return string(respBody), nil
+}
+
+// HttpPostForm HttpMultiForm
+func (c *Client) HttpMultiForm(address string, apiUrl string,
+	params map[string]string, formParam map[string]string, fileMap map[string][]byte) (string, error) {
+
+	// Prepare a form that you will submit to that URL.
+	var b bytes.Buffer
+	w := multipart.NewWriter(&b)
+
+	// 读文件
+	for k, v := range fileMap {
+		// 生成一个临时文件名
+		tmpfile := fmt.Sprintf("/tmp/%s.jpg", util.RandUint6())
+		fw, err := w.CreateFormFile(k, tmpfile)
+		if err != nil {
+			return "", fmt.Errorf("w.CreateFormFile failed:%s", err)
+		}
+		_, err = fw.Write(v)
+		if err != nil {
+			return "", fmt.Errorf("fw.Write failed:%s", err)
+		}
+	}
+
+	// 读param
+	for k, v := range formParam {
+		err := w.WriteField(k, v)
+		if err != nil {
+			return "", fmt.Errorf("w.WriteField failed:%s", err)
+		}
+	}
+
+	w.Close()
+
+	// 组装url
+	url, err := util.Join(address, apiUrl)
+	if err != nil {
+		return "", fmt.Errorf("util.Join failed:%s, address=%s, apiUrl=%s", err.Error(), address, apiUrl)
+	}
+	urlStr := url.String()
+
+	header, urlParams := BuildHttpHeader(c, params)
+	if urlParams != "" {
+		urlStr = urlStr + "?" + urlParams
+	}
+	header.Set("Content-Type", w.FormDataContentType())
+
+	// Now that you have a form, you can submit it to your handler.
+	req, err := http.NewRequest("POST", urlStr, &b)
+	if err != nil {
+		return "", err
+	}
+
+	req.Header = header
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
