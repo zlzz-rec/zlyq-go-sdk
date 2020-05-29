@@ -8,14 +8,14 @@ import (
 	"github.com/zlzz-rec/zlyq-go-sdk/util"
 )
 
-// HistorySynchronize 上传用户历史埋点数据
-func (client *Client) HistorySynchronize(trackInfo model.TrackInfo) error {
+// TrackSynchronize 上传用户历史埋点数据
+func (client *Client) TrackSynchronize(trackInfo model.TrackInfo) error {
 	body, err := json.Marshal(trackInfo)
 	if err != nil {
 		return err
 	}
 
-	resp, err := client.HttpMethod("POST", client.Address, util.HistorySynchronizeApi, nil, body)
+	resp, err := client.HttpMethod("POST", client.Address, util.TrackSynchronizeApi, nil, body)
 	fmt.Println(resp)
 	if err != nil {
 		return err

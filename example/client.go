@@ -36,8 +36,8 @@ func syncUserFollowExample(client *handler.Client) {
 	}
 }
 
-// syncHistoryExample
-func syncHistoryExample(client *handler.Client) {
+// syncTrackExample
+func syncTrackExample(client *handler.Client) {
 
 	// 用户基本信息导入
 	trackCommon := model.TrackCommon{
@@ -68,7 +68,7 @@ func syncHistoryExample(client *handler.Client) {
 	}
 
 	// 同步用户历史数据
-	if err := client.HistorySynchronize(req); err != nil {
+	if err := client.TrackSynchronize(req); err != nil {
 		fmt.Println(err)
 	}
 }
@@ -297,7 +297,7 @@ func main() {
 	// 	AppSecret: "2d4964bbafde4bf415f9e5b81c4556b3",
 	// 	Address:   "http://testtrackapi.zplatform.cn",
 	// }
-	// syncHistoryExample(trackClient)
+	// syncTrackExample(trackClient)
 
 	// 同步视频example
 	// videoClient := &handler.Client{
