@@ -279,16 +279,32 @@ func uploadVideoExample(client *handler.Client) error {
 	return nil
 }
 
+// uploadArticleExample 上传图文
+func wxUnifiedOrder(client *handler.Client) {
+
+	req := &model.WxAppPostRawBody{
+		OrderId:   "12020052941823832393",
+		Body:      "测试",
+		TradeType: "SERVER_APP",
+		TotalFee:  40000,
+		NotifyUrl: "http://testapi.mcner.com/earner/api/v1/transaction/pay/notify",
+	}
+
+	if err := client.WxUnifiedOrder(req); err != nil {
+		fmt.Println(err)
+	}
+}
+
 func main() {
 
 	// 同步用户数据example
-	appClient := &handler.Client{
-		AppId:     450007472627785728,
-		AppKey:    "bb4ddb451bdd80af204d9f464fbf07df",
-		AppSecret: "2d4964bbafde4bf415f9e5b81c4556b3",
-		Address:   "http://testappapi.zplatform.cn",
-	}
-	syncUserExample(appClient)
+	//appClient := &handler.Client{
+	//	AppId:     450007472627785728,
+	//	AppKey:    "bb4ddb451bdd80af204d9f464fbf07df",
+	//	AppSecret: "2d4964bbafde4bf415f9e5b81c4556b3",
+	//	Address:   "http://testappapi.zplatform.cn",
+	//}
+	//wxUnifiedOrder(appClient)
 
 	// // 同步历史交互数据example
 	// trackClient := &handler.Client{
@@ -380,4 +396,12 @@ func main() {
 	// }
 	// uploadVideoExample(videoClient)
 
+	appClient := &handler.Client{
+		AppId:     457639568360448000,
+		AppKey:    "29d9c1ec0eeaaa4eed534d676633a909",
+		AppSecret: "c3bf54192a63f047030f0bfb83df6055",
+		Address:   "http://testappapi.zplatform.cn",
+	}
+
+	wxUnifiedOrder(appClient)
 }

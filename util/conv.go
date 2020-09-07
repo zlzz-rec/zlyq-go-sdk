@@ -17,4 +17,6 @@ const (
 	MediaFavoriteSynchronizeApi = "/api/v1/mediaFavoriteSync" // 收藏数据
 	CommentSynchronizeApi       = "/api/v1/commentSync"       // 评论数据
 	CommentLikeSynchronizeApi   = "/api/v1/commentLikeSync"   // 评论点赞数据
+
+	WxUnifiedOrderApi = "/api/v1/transaction/wx/pay" //发起下单请求
 )
